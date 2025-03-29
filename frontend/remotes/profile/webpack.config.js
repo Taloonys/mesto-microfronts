@@ -43,21 +43,15 @@ module.exports = {
       name: "profile",
       filename: "remoteEntry.js",
       remotes: {},
-      exposes: {},
-      shared: {
-        ...deps,
-        react: {
-          singleton: true,
-          requiredVersion: deps.react,
-        },
-        "react-dom": {
-          singleton: true,
-          requiredVersion: deps["react-dom"],
-        },
+      exposes: {
+        "./EditAvatarPopup": "./src/EditAvatarPopup.js",
+        "./EditProfilePopup": "./src/EditAvatarPopup.js",
+        /* prb would be shared */ "./PopupWithForm": "./src/PopupWithForm.js"
       },
+      shared: ["react", "react-dom"]
     }),
-    new HtmlWebPackPlugin({
-      template: "./src/index.html",
-    }),
+    // new HtmlWebPackPlugin({
+    //   template: "./src/index.html",
+    // }),
   ],
 };
