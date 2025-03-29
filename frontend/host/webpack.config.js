@@ -49,20 +49,10 @@ module.exports = {
         profile: 'profile@http://localhost:8084/remoteEntry.js'
       },
       exposes: {},
-      shared: {
-        ...deps,
-        react: {
-          singleton: true,
-          requiredVersion: deps.react,
-        },
-        "react-dom": {
-          singleton: true,
-          requiredVersion: deps["react-dom"],
-        },
-      },
+      shared: ["react", "react-dom"]
     }),
-    new HtmlWebPackPlugin({
-      template: "./src/index.html",
-    }),
+    // new HtmlWebPackPlugin({
+    //   template: "./src/index.html",
+    // }),
   ],
 };

@@ -43,21 +43,14 @@ module.exports = {
       name: "auth",
       filename: "remoteEntry.js",
       remotes: {},
-      exposes: {},
-      shared: {
-        ...deps,
-        react: {
-          singleton: true,
-          requiredVersion: deps.react,
-        },
-        "react-dom": {
-          singleton: true,
-          requiredVersion: deps["react-dom"],
-        },
+      exposes: {
+        "./Login": "./src/Login.js",
+        "./Register": "./src/Register.js"
       },
+      shared: ["react", "react-dom"]
     }),
-    new HtmlWebPackPlugin({
-      template: "./src/index.html",
-    }),
+    // new HtmlWebPackPlugin({
+    //   template: "./src/index.html",
+    // }),
   ],
 };
