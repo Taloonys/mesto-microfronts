@@ -44,8 +44,8 @@ module.exports = {
       filename: "remoteEntry.js",
       remotes: {
         auth: 'auth@http://localhost:8081/remoteEntry.js',
-        catalog: 'catalog@http://localhost:8082/remoteEntry.js',
-        insertion: 'insertion@http://localhost:8083/remoteEntry.js',
+        // catalog: 'catalog@http://localhost:8082/remoteEntry.js',
+        // insertion: 'insertion@http://localhost:8083/remoteEntry.js',
         profile: 'profile@http://localhost:8084/remoteEntry.js'
       },
       exposes: {},

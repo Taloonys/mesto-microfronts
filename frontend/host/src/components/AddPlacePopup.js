@@ -32,6 +32,7 @@ function AddPlacePopup({ isOpen, onAddPlace, onClose }) {
                required minLength="1" maxLength="30" value={name} onChange={handleNameChange} />
         <span className="popup__error" id="place-name-error"></span>
       </label>
+
       <label className="popup__label">
         <input type="url" name="link" id="place-link"
                className="popup__input popup__input_type_url" placeholder="Ссылка на картинку"

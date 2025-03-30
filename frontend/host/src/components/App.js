@@ -1,4 +1,4 @@
-import React from "react";
+import React, {lazy, Suspence} from "react";
 import { Route, useHistory, Switch } from "react-router-dom";
 import Header from "./Header";
 import Main from "./Main";
@@ -16,22 +16,50 @@ import InfoTooltip from "./InfoTooltip";
 import ProtectedRoute from "./ProtectedRoute";
 import * as auth from "../utils/auth.js";
 
+
+const Login = lazy(() => import('auth/Login')
+  .catch(() => { 
+    return { 
+      default:() => <div> Login load failed</div>}
+    }
+  )
+);
+
+
+const Register = lazy(() => import('auth/Register')
+  .catch(() => {
+    return {
+      default: () => <div> Register load failed </div>
+    }
+  })
+);
+
+
+const InfoTooltip = lazy(() => import('auth/InfoTooltip')
+  .catch(() => {
+    return {
+      default: () => <div> Register load failed </div>
+    }
+  })
+);
+
+
 function App() {
-  const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] =
-    React.useState(false);
-  const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false);
-  const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] =
-    React.useState(false);
-  const [selectedCard, setSelectedCard] = React.useState(null);
+  const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = React.useState(false);
+  const [isAddPlacePopupOpen, setIsAddPlacePopupOpen]       = React.useState(false);
+  const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen]   = React.useState(false);
+
   const [cards, setCards] = React.useState([]);
+  const [selectedCard, setSelectedCard] = React.useState(null);
 
   // В корневом компоненте App создана стейт-переменная currentUser. Она используется в качестве значения для провайдера контекста.
   const [currentUser, setCurrentUser] = React.useState({});
 
-  const [isInfoToolTipOpen, setIsInfoToolTipOpen] = React.useState(false);
   const [tooltipStatus, setTooltipStatus] = React.useState("");
+  const [isInfoToolTipOpen, setIsInfoToolTipOpen] = React.useState(false);
 
   const [isLoggedIn, setIsLoggedIn] = React.useState(false);
+
   //В компоненты добавлены новые стейт-переменные: email — в компонент App
   const [email, setEmail] = React.useState("");
 
@@ -139,34 +167,6 @@ function App() {
         closeAllPopups();
       })
       .catch((err) => console.log(err));
-  }
-
-  function onRegister({ email, password }) {
-    auth
-      .register(email, password)
-      .then((res) => {
-        setTooltipStatus("success");
-        setIsInfoToolTipOpen(true);
-        history.push("/signin");
-      })
-      .catch((err) => {
-        setTooltipStatus("fail");
-        setIsInfoToolTipOpen(true);
-      });
-  }
-
-  function onLogin({ email, password }) {
-    auth
-      .login(email, password)
-      .then((res) => {
-        setIsLoggedIn(true);
-        setEmail(email);
-        history.push("/");
-      })
-      .catch((err) => {
-        setTooltipStatus("fail");
-        setIsInfoToolTipOpen(true);
-      });
   }
 
   function onSignOut() {

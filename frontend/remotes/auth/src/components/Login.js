@@ -6,6 +6,20 @@ function Login ({ onLogin }){
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
 
+  function onLogin({ email, password }) {
+    auth
+      .login(email, password)
+      .then((res) => {
+        setIsLoggedIn(true);
+        setEmail(email);
+        history.push("/");
+      })
+      .catch((err) => {
+        setTooltipStatus("fail");
+        setIsInfoToolTipOpen(true);
+      });
+  }
+
   function handleSubmit(e){
     e.preventDefault();
     const userData = {
