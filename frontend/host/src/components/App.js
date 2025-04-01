@@ -5,22 +5,16 @@ import Main from "./Main";
 import Footer from "./Footer";
 import PopupWithForm from "./PopupWithForm";
 import ImagePopup from "./ImagePopup";
-import api from "../utils/api";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
-import EditProfilePopup from "./EditProfilePopup";
-import EditAvatarPopup from "./EditAvatarPopup";
 import AddPlacePopup from "./AddPlacePopup";
-import Register from "./Register";
-import Login from "./Login";
-import InfoTooltip from "./InfoTooltip";
 import ProtectedRoute from "./ProtectedRoute";
-import * as auth from "../utils/auth.js";
+import InfoTooltip from "./InfoTooltip.js";
 
 
 const Login = lazy(() => import('auth/Login')
   .catch(() => { 
     return { 
-      default:() => <div> Login load failed</div>}
+      default:() => <div> Login load failed </div>}
     }
   )
 );
@@ -35,12 +29,21 @@ const Register = lazy(() => import('auth/Register')
 );
 
 
-const InfoTooltip = lazy(() => import('auth/InfoTooltip')
-  .catch(() => {
-    return {
-      default: () => <div> Register load failed </div>
+const EditProfilePopup = lazy(() => import('profile/EditProfilePopup')
+  .catch(() => { 
+    return { 
+      default:() => <div> EditProfilePopup load failed </div>}
     }
-  })
+  )
+);
+
+
+const EditAvatarPopup = lazy(() => import('profile/EditAvatarPopup')
+  .catch(() => { 
+    return { 
+      default:() => <div> EditAvatarPopup load failed </div>}
+    }
+  )
 );
 
 
@@ -144,7 +147,9 @@ function App() {
       .changeLikeCardStatus(card._id, !isLiked)
       .then((newCard) => {
         setCards((cards) =>
-          cards.map((c) => (c._id === card._id ? newCard : c))
+          cards.map((c) => (c._id === card._id 
+            ? newCard 
+            : c))
         );
       })
       .catch((err) => console.log(err));
@@ -183,6 +188,7 @@ function App() {
       <div className="page__content">
         <Header email={email} onSignOut={onSignOut} />
         <Switch>
+
           <ProtectedRoute
             exact
             path="/"
@@ -196,30 +202,38 @@ function App() {
             onCardDelete={handleCardDelete}
             loggedIn={isLoggedIn}
           />
+
           <Route path="/signup">
             <Register onRegister={onRegister} />
           </Route>
+
           <Route path="/signin">
             <Login onLogin={onLogin} />
           </Route>
+
         </Switch>
         <Footer />
+
         <EditProfilePopup
           isOpen={isEditProfilePopupOpen}
           onUpdateUser={handleUpdateUser}
           onClose={closeAllPopups}
         />
+
         <AddPlacePopup
           isOpen={isAddPlacePopupOpen}
           onAddPlace={handleAddPlaceSubmit}
           onClose={closeAllPopups}
         />
+
         <PopupWithForm title="Вы уверены?" name="remove-card" buttonText="Да" />
+
         <EditAvatarPopup
           isOpen={isEditAvatarPopupOpen}
           onUpdateAvatar={handleUpdateAvatar}
           onClose={closeAllPopups}
         />
+
         <ImagePopup card={selectedCard} onClose={closeAllPopups} />
         <InfoTooltip
           isOpen={isInfoToolTipOpen}

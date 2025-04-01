@@ -46,7 +46,7 @@ module.exports = {
       exposes: {
         "./EditAvatarPopup": "./src/EditAvatarPopup.js",
         "./EditProfilePopup": "./src/EditAvatarPopup.js",
-        /* prb would be shared */ "./PopupWithForm": "./src/PopupWithForm.js"
+        // /* prb would be shared */ "./PopupWithForm": "./src/PopupWithForm.js"
       },
       shared: ["react", "react-dom"]
     }),

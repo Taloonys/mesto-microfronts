@@ -1,7 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-function Register ({ onRegister }){
+
+function Register ({ onRegister }) {
+
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
 
@@ -19,7 +21,8 @@ function Register ({ onRegister }){
       });
   }
 
-  function handleSubmit(e){
+  function handleSubmit(e) {
+
     e.preventDefault();
     const userData = {
       email,
@@ -27,6 +30,7 @@ function Register ({ onRegister }){
     }
     onRegister(userData);
   }
+
   return (
     <div className="auth-form">
       <form className="auth-form__form" onSubmit={handleSubmit}>
@@ -58,5 +62,6 @@ function Register ({ onRegister }){
     </div>
   )
 }
+
 
 export default Register;
