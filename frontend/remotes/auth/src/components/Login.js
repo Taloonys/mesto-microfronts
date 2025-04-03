@@ -2,7 +2,8 @@ import React from 'react';
 
 import '../styles/login/login.css';
 
-function Login ({ onLogin }){
+
+function Login () {
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
 
@@ -22,10 +23,8 @@ function Login ({ onLogin }){
 
   function handleSubmit(e){
     e.preventDefault();
-    const userData = {
-      email,
-      password
-    }
+
+    const userData = { email, password }
     onLogin(userData);
   }
 

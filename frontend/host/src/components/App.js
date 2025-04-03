@@ -3,13 +3,20 @@ import { Route, useHistory, Switch } from "react-router-dom";
 import Header from "./Header";
 import Main from "./Main";
 import Footer from "./Footer";
-import PopupWithForm from "./PopupWithForm";
 import ImagePopup from "./ImagePopup";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 import AddPlacePopup from "./AddPlacePopup";
 import ProtectedRoute from "./ProtectedRoute";
 import InfoTooltip from "./InfoTooltip.js";
 
+
+const PopupWithForm = lazy(() => import('shared_components/PopupWithForm')
+  .catch(() => { 
+    return { 
+      default:() => <div> PopupWithForm load failed </div>}
+    }
+  )
+);
 
 const Login = lazy(() => import('auth/Login')
   .catch(() => { 
@@ -121,26 +128,6 @@ function App() {
     setSelectedCard(card);
   }
 
-  function handleUpdateUser(userUpdate) {
-    api
-      .setUserInfo(userUpdate)
-      .then((newUserData) => {
-        setCurrentUser(newUserData);
-        closeAllPopups();
-      })
-      .catch((err) => console.log(err));
-  }
-
-  function handleUpdateAvatar(avatarUpdate) {
-    api
-      .setUserAvatar(avatarUpdate)
-      .then((newUserData) => {
-        setCurrentUser(newUserData);
-        closeAllPopups();
-      })
-      .catch((err) => console.log(err));
-  }
-
   function handleCardLike(card) {
     const isLiked = card.likes.some((i) => i._id === currentUser._id);
     api
@@ -204,11 +191,11 @@ function App() {
           />
 
           <Route path="/signup">
-            <Register onRegister={onRegister} />
+            <Register />
           </Route>
 
           <Route path="/signin">
-            <Login onLogin={onLogin} />
+            <Login />
           </Route>
 
         </Switch>
@@ -216,7 +203,6 @@ function App() {
 
         <EditProfilePopup
           isOpen={isEditProfilePopupOpen}
-          onUpdateUser={handleUpdateUser}
           onClose={closeAllPopups}
         />
 
@@ -230,7 +216,6 @@ function App() {
 
         <EditAvatarPopup
           isOpen={isEditAvatarPopupOpen}
-          onUpdateAvatar={handleUpdateAvatar}
           onClose={closeAllPopups}
         />
 

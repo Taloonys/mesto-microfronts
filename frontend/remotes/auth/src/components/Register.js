@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 
-function Register ({ onRegister }) {
+function Register () {
 
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');

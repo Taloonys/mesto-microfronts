@@ -46,7 +46,8 @@ module.exports = {
         auth: 'auth@http://localhost:8081/remoteEntry.js',
         // catalog: 'catalog@http://localhost:8082/remoteEntry.js',
         // insertion: 'insertion@http://localhost:8083/remoteEntry.js',
-        profile: 'profile@http://localhost:8084/remoteEntry.js'
+        profile: 'profile@http://localhost:8084/remoteEntry.js',
+        shared_components: 'shared_components@http://localhost:8085/remoteEntry.js'
       },
       exposes: {},
       shared: ["react", "react-dom"]

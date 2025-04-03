@@ -1,6 +1,7 @@
 const HtmlWebPackPlugin = require("html-webpack-plugin");
 const ModuleFederationPlugin = require("webpack/lib/container/ModuleFederationPlugin");
 
+
 const deps = require("./package.json").dependencies;
 module.exports = {
   output: {
@@ -42,11 +43,12 @@ module.exports = {
     new ModuleFederationPlugin({
       name: "profile",
       filename: "remoteEntry.js",
-      remotes: {},
+      remotes: {
+        shared_components: 'shared_components@http://localhost:8085/remoteEntry.js'
+      },
       exposes: {
         "./EditAvatarPopup": "./src/EditAvatarPopup.js",
         "./EditProfilePopup": "./src/EditAvatarPopup.js",
-        // /* prb would be shared */ "./PopupWithForm": "./src/PopupWithForm.js"
       },
       shared: ["react", "react-dom"]
     }),

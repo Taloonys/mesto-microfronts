@@ -1,10 +1,29 @@
-import React from 'react';
-import PopupWithForm from './PopupWithForm';
+import React, { lazy } from 'react';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
+
+
+const PopupWithForm = lazy(() => import('shared_components/PopupWithForm')
+  .catch(() => { 
+    return { 
+      default:() => <div> PopupWithForm load failed </div>}
+    }
+  )
+);
+
 
 function EditProfilePopup({ isOpen, onUpdateUser, onClose }) {
   const [name, setName] = React.useState('');
   const [description, setDescription] = React.useState('');
+
+  function handleUpdateUser(userUpdate) {
+    api
+      .setUserInfo(userUpdate)
+      .then((newUserData) => {
+        setCurrentUser(newUserData);
+        closeAllPopups();
+      })
+      .catch((err) => console.log(err));
+  }
 
   function handleNameChange(e) {
     setName(e.target.value);
@@ -25,11 +44,7 @@ function EditProfilePopup({ isOpen, onUpdateUser, onClose }) {
 
   function handleSubmit(e) {
     e.preventDefault();
-
-    onUpdateUser({
-      name,
-      about: description,
-    });
+    handleUpdateUser({ name, about: description, });
   }
 
   return (

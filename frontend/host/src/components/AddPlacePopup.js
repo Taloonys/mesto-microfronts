@@ -1,5 +1,14 @@
-import React from 'react';
-import PopupWithForm from './PopupWithForm';
+import React, { lazy } from 'react';
+
+
+const PopupWithForm = lazy(() => import('shared_components/PopupWithForm')
+  .catch(() => { 
+    return { 
+      default:() => <div> PopupWithForm load failed </div>}
+    }
+  )
+);
+
 
 function AddPlacePopup({ isOpen, onAddPlace, onClose }) {
   const [name, setName] = React.useState('');
@@ -16,15 +25,16 @@ function AddPlacePopup({ isOpen, onAddPlace, onClose }) {
   function handleSubmit(e) {
     e.preventDefault();
 
-    onAddPlace({
-      name,
-      link
-    });
+    onAddPlace({ name, link });
   }
 
   return (
     <PopupWithForm
-      isOpen={isOpen} onSubmit={handleSubmit} onClose={onClose} title="Новое место" name="new-card"
+      isOpen={isOpen} 
+      onSubmit={handleSubmit} 
+      onClose={onClose} 
+      title="Новое место" 
+      name="new-card"
     >
       <label className="popup__label">
         <input type="text" name="name" id="place-name"

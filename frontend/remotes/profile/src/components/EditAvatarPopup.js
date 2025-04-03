@@ -1,8 +1,27 @@
-import React from 'react';
-import PopupWithForm from './PopupWithForm';
+import React, { lazy } from 'react';
 
-function EditAvatarPopup({ isOpen, onUpdateAvatar, onClose }) {
+
+const PopupWithForm = lazy(() => import('shared_components/PopupWithForm')
+  .catch(() => { 
+    return { 
+      default:() => <div> PopupWithForm load failed </div>}
+    }
+  )
+);
+
+
+function EditAvatarPopup({ isOpen, onClose }) {
   const inputRef = React.useRef();
+
+  function onUpdateAvatar(avatarUpdate) {
+    api
+      .setUserAvatar(avatarUpdate)
+      .then((newUserData) => {
+        setCurrentUser(newUserData);
+        closeAllPopups();
+      })
+      .catch((err) => console.log(err));
+  }
 
   function handleSubmit(e) {
     e.preventDefault();
