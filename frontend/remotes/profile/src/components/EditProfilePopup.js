@@ -1,14 +1,6 @@
 import React, { lazy } from 'react';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
-
-
-const PopupWithForm = lazy(() => import('shared_components/PopupWithForm')
-  .catch(() => { 
-    return { 
-      default:() => <div> PopupWithForm load failed </div>}
-    }
-  )
-);
+import { components, utils } from 'shared';
 
 
 function EditProfilePopup({ isOpen, onUpdateUser, onClose }) {

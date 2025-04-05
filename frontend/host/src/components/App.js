@@ -4,19 +4,19 @@ import Header from "./Header";
 import Main from "./Main";
 import Footer from "./Footer";
 import ImagePopup from "./ImagePopup";
-import { CurrentUserContext } from "../contexts/CurrentUserContext";
+import { CurrentUserContext, PopupWithForm, api } from 'shared'
 import AddPlacePopup from "./AddPlacePopup";
 import ProtectedRoute from "./ProtectedRoute";
 import InfoTooltip from "./InfoTooltip.js";
 
-
-const PopupWithForm = lazy(() => import('shared_components/PopupWithForm')
+const Catalog = lazy(() => import('catalog/Catalog')
   .catch(() => { 
     return { 
-      default:() => <div> PopupWithForm load failed </div>}
+      default:() => <div> Catalog load failed </div>}
     }
   )
 );
+
 
 const Login = lazy(() => import('auth/Login')
   .catch(() => { 
@@ -60,7 +60,6 @@ function App() {
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen]   = React.useState(false);
 
   const [cards, setCards] = React.useState([]);
-  const [selectedCard, setSelectedCard] = React.useState(null);
 
   // В корневом компоненте App создана стейт-переменная currentUser. Она используется в качестве значения для провайдера контекста.
   const [currentUser, setCurrentUser] = React.useState({});
@@ -75,16 +74,6 @@ function App() {
 
   const history = useHistory();
 
-  // Запрос к API за информацией о пользователе и массиве карточек выполняется единожды, при монтировании.
-  React.useEffect(() => {
-    api
-      .getAppInfo()
-      .then(([cardData, userData]) => {
-        setCurrentUser(userData);
-        setCards(cardData);
-      })
-      .catch((err) => console.log(err));
-  }, []);
 
   // при монтировании App описан эффект, проверяющий наличие токена и его валидности
   React.useEffect(() => {
@@ -124,33 +113,6 @@ function App() {
     setSelectedCard(null);
   }
 
-  function handleCardClick(card) {
-    setSelectedCard(card);
-  }
-
-  function handleCardLike(card) {
-    const isLiked = card.likes.some((i) => i._id === currentUser._id);
-    api
-      .changeLikeCardStatus(card._id, !isLiked)
-      .then((newCard) => {
-        setCards((cards) =>
-          cards.map((c) => (c._id === card._id 
-            ? newCard 
-            : c))
-        );
-      })
-      .catch((err) => console.log(err));
-  }
-
-  function handleCardDelete(card) {
-    api
-      .removeCard(card._id)
-      .then(() => {
-        setCards((cards) => cards.filter((c) => c._id !== card._id));
-      })
-      .catch((err) => console.log(err));
-  }
-
   function handleAddPlaceSubmit(newCard) {
     api
       .addCard(newCard)
@@ -184,9 +146,6 @@ function App() {
             onEditProfile={handleEditProfileClick}
             onAddPlace={handleAddPlaceClick}
             onEditAvatar={handleEditAvatarClick}
-            onCardClick={handleCardClick}
-            onCardLike={handleCardLike}
-            onCardDelete={handleCardDelete}
             loggedIn={isLoggedIn}
           />
 
@@ -219,7 +178,6 @@ function App() {
           onClose={closeAllPopups}
         />
 
-        <ImagePopup card={selectedCard} onClose={closeAllPopups} />
         <InfoTooltip
           isOpen={isInfoToolTipOpen}
           onClose={closeAllPopups}

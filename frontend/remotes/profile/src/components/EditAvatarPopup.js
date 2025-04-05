@@ -1,13 +1,5 @@
 import React, { lazy } from 'react';
-
-
-const PopupWithForm = lazy(() => import('shared_components/PopupWithForm')
-  .catch(() => { 
-    return { 
-      default:() => <div> PopupWithForm load failed </div>}
-    }
-  )
-);
+import { components, utils } from 'shared';
 
 
 function EditAvatarPopup({ isOpen, onClose }) {
