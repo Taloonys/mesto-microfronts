@@ -1,10 +1,12 @@
 import React from 'react';
+import ImagePopup from "./ImagePopup";
 import { ProtectedRoute } from 'shared';
 
 
 function Catalog() {
 
   const [selectedCard, setSelectedCard] = React.useState(null);
+  const [cards, setCards] = React.useState([]);
 
   // Запрос к API за информацией о пользователе и массиве карточек выполняется единожды, при монтировании.
   React.useEffect(() => {
@@ -47,6 +49,7 @@ function Catalog() {
   return (
     <div>
         <ProtectedRoute
+            cards={cards}
             onCardClick={handleCardClick}
             onCardLike={handleCardLike}
             onCardDelete={handleCardDelete}

@@ -6,6 +6,7 @@ import '../styles/login/login.css';
 function Login () {
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
+  const [isLoggedIn, setIsLoggedIn] = React.useState(false);
 
   function onLogin({ email, password }) {
     auth
@@ -52,6 +53,11 @@ function Login () {
 
         <button className="auth-form__button" type="submit">Войти</button>
       </form>
+
+      <ProtectedRoute
+        loggedIn={isLoggedIn}
+      />
+
     </div>
   )
 }

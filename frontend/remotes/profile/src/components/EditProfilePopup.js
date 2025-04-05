@@ -1,11 +1,15 @@
-import React, { lazy } from 'react';
-import { CurrentUserContext } from '../contexts/CurrentUserContext';
-import { components, utils } from 'shared';
+import React from 'react';
+import { CurrentUserContext, ProtectedRoute, api, PopupWithForm } from 'shared';
 
 
 function EditProfilePopup({ isOpen, onUpdateUser, onClose }) {
   const [name, setName] = React.useState('');
   const [description, setDescription] = React.useState('');
+  const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = React.useState(false);
+
+  function handleEditProfileClick() {
+    setIsEditProfilePopupOpen(true);
+  }
 
   function handleUpdateUser(userUpdate) {
     api
@@ -40,24 +44,31 @@ function EditProfilePopup({ isOpen, onUpdateUser, onClose }) {
   }
 
   return (
-    <PopupWithForm
-      isOpen={isOpen} onSubmit={handleSubmit} onClose={onClose} title="Редактировать профиль" name="edit"
-    >
-      <label className="popup__label">
-        <input type="text" name="userName" id="owner-name"
-               className="popup__input popup__input_type_name" placeholder="Имя"
-               required minLength="2" maxLength="40" pattern="[a-zA-Zа-яА-Я -]{1,}"
-               value={name || ''} onChange={handleNameChange} />
-        <span className="popup__error" id="owner-name-error"></span>
-      </label>
-      <label className="popup__label">
-        <input type="text" name="userDescription" id="owner-description"
-               className="popup__input popup__input_type_description" placeholder="Занятие"
-               required minLength="2" maxLength="200"
-               value={description || ''} onChange={handleDescriptionChange} />
-        <span className="popup__error" id="owner-description-error"></span>
-      </label>
-    </PopupWithForm>
+    <div>
+      <PopupWithForm
+        isOpen={isOpen} onSubmit={handleSubmit} onClose={onClose} title="Редактировать профиль" name="edit"
+      >
+        <label className="popup__label">
+          <input type="text" name="userName" id="owner-name"
+                className="popup__input popup__input_type_name" placeholder="Имя"
+                required minLength="2" maxLength="40" pattern="[a-zA-Zа-яА-Я -]{1,}"
+                value={name || ''} onChange={handleNameChange} />
+          <span className="popup__error" id="owner-name-error"></span>
+        </label>
+        <label className="popup__label">
+          <input type="text" name="userDescription" id="owner-description"
+                className="popup__input popup__input_type_description" placeholder="Занятие"
+                required minLength="2" maxLength="200"
+                value={description || ''} onChange={handleDescriptionChange} />
+          <span className="popup__error" id="owner-description-error"></span>
+        </label>
+      </PopupWithForm>
+
+      <ProtectedRoute
+        onEditProfile={handleEditProfileClick}
+      />
+
+    </div>
   );
 }
 
