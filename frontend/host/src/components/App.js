@@ -3,63 +3,47 @@ import { Route, useHistory, Switch } from "react-router-dom";
 import Header from "./Header";
 import Main from "./Main";
 import Footer from "./Footer";
-import ImagePopup from "./ImagePopup";
-import { CurrentUserContext, PopupWithForm, api } from 'shared'
+import { ProtectedRoute, CurrentUserContext, PopupWithForm, api } from 'shared'
 import AddPlacePopup from "./AddPlacePopup";
-import ProtectedRoute from "./ProtectedRoute";
 import InfoTooltip from "./InfoTooltip.js";
 
 const Catalog = lazy(() => import('catalog/Catalog')
   .catch(() => { 
-    return { 
-      default:() => <div> Catalog load failed </div>}
-    }
+    return { default:() => <div> Catalog load failed </div>} }
   )
 );
 
 
 const Login = lazy(() => import('auth/Login')
   .catch(() => { 
-    return { 
-      default:() => <div> Login load failed </div>}
-    }
+    return { default:() => <div> Login load failed </div>} }
   )
 );
 
 
 const Register = lazy(() => import('auth/Register')
   .catch(() => {
-    return {
-      default: () => <div> Register load failed </div>
-    }
+    return { default: () => <div> Register load failed </div> }
   })
 );
 
 
 const EditProfilePopup = lazy(() => import('profile/EditProfilePopup')
   .catch(() => { 
-    return { 
-      default:() => <div> EditProfilePopup load failed </div>}
-    }
+    return { default:() => <div> EditProfilePopup load failed </div>} }
   )
 );
 
 
 const EditAvatarPopup = lazy(() => import('profile/EditAvatarPopup')
   .catch(() => { 
-    return { 
-      default:() => <div> EditAvatarPopup load failed </div>}
-    }
+    return { default:() => <div> EditAvatarPopup load failed </div>} }
   )
 );
 
 
 function App() {
-  const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = React.useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen]       = React.useState(false);
-  const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen]   = React.useState(false);
-
-  const [cards, setCards] = React.useState([]);
 
   // В корневом компоненте App создана стейт-переменная currentUser. Она используется в качестве значения для провайдера контекста.
   const [currentUser, setCurrentUser] = React.useState({});
@@ -67,13 +51,10 @@ function App() {
   const [tooltipStatus, setTooltipStatus] = React.useState("");
   const [isInfoToolTipOpen, setIsInfoToolTipOpen] = React.useState(false);
 
-  const [isLoggedIn, setIsLoggedIn] = React.useState(false);
-
   //В компоненты добавлены новые стейт-переменные: email — в компонент App
   const [email, setEmail] = React.useState("");
 
   const history = useHistory();
-
 
   // при монтировании App описан эффект, проверяющий наличие токена и его валидности
   React.useEffect(() => {
@@ -93,16 +74,8 @@ function App() {
     }
   }, [history]);
 
-  function handleEditProfileClick() {
-    setIsEditProfilePopupOpen(true);
-  }
-
   function handleAddPlaceClick() {
     setIsAddPlacePopupOpen(true);
-  }
-
-  function handleEditAvatarClick() {
-    setIsEditAvatarPopupOpen(true);
   }
 
   function closeAllPopups() {
@@ -142,11 +115,8 @@ function App() {
             exact
             path="/"
             component={Main}
-            cards={cards}
-            onEditProfile={handleEditProfileClick}
+            catalog_component={Catalog}
             onAddPlace={handleAddPlaceClick}
-            onEditAvatar={handleEditAvatarClick}
-            loggedIn={isLoggedIn}
           />
 
           <Route path="/signup">
@@ -160,10 +130,7 @@ function App() {
         </Switch>
         <Footer />
 
-        <EditProfilePopup
-          isOpen={isEditProfilePopupOpen}
-          onClose={closeAllPopups}
-        />
+        <EditProfilePopup />
 
         <AddPlacePopup
           isOpen={isAddPlacePopupOpen}
@@ -172,11 +139,6 @@ function App() {
         />
 
         <PopupWithForm title="Вы уверены?" name="remove-card" buttonText="Да" />
-
-        <EditAvatarPopup
-          isOpen={isEditAvatarPopupOpen}
-          onClose={closeAllPopups}
-        />
 
         <InfoTooltip
           isOpen={isInfoToolTipOpen}
